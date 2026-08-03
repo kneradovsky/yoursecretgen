@@ -1,0 +1,16 @@
+[package]
+name = "uuidhash-wasm"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+uuid = { version = "1", features = ["v4", "js"] }
+base64 = "0.22"
+sha1 = "0.10"
+sha2 = "0.10"
+bcrypt = "0.17"
+getrandom = { version = "0.3", features = ["wasm_js"] }
