@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSEO } from '../hooks/useSEO';
 import { uuid_v4 } from '../wasm';
 
 function UuidSection() {
   useSEO(
-    'UUID v4 Generator — uuidhash',
+    'UUID v4 Generator — My Local Dev Tools',
     'Generate random UUID v4 identifiers locally in your browser using WebAssembly. No data is sent to any server.'
   );
 
@@ -19,6 +19,10 @@ function UuidSection() {
       navigator.clipboard.writeText(value);
     }
   };
+
+  useEffect(() => {
+    handleGenerate()
+  },[])
 
   return (
     <div className="card">

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useSEO } from '../hooks/useSEO';
+import CopyButton from './CopyButton';
 import { base64_encode, base64_decode } from '../wasm';
 
 function Base64Section() {
   useSEO(
-    'Base64 Encode / Decode — uuidhash',
+    'Base64 Encode / Decode — My Local Dev Tools',
     'Encode and decode standard or URL-safe Base64 strings locally in your browser using WebAssembly. No data is sent to any server.'
   );
 
@@ -61,7 +62,12 @@ function Base64Section() {
           Decode
         </button>
       </div>
-      {output && <div className="output">{output}</div>}
+      {output && (
+        <div className="output-with-copy">
+          <div className="output">{output}</div>
+          <CopyButton text={output} />
+        </div>
+      )}
       {error && <div className="error">{error}</div>}
     </div>
   );

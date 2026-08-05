@@ -100,6 +100,60 @@ nav a.active {
   box-shadow: 0 4px 20px rgba(79, 124, 255, 0.35);
 }
 
+.footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.footer-privacy {
+  margin: 0 0 16px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.output-with-copy {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.output-with-copy .output {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.copy-button {
+  width: auto;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  min-height: 44px;
+}
+
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);

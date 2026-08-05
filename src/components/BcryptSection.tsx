@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useSEO } from '../hooks/useSEO';
+import CopyButton from './CopyButton';
 import { bcrypt_hash, bcrypt_verify } from '../wasm';
 
 type Tab = 'hash' | 'verify';
 
 function BcryptSection() {
   useSEO(
-    'bcrypt Hash & Verify — uuidhash',
+    'bcrypt Hash & Verify — My Local Dev Tools',
     'Generate and verify bcrypt password hashes locally in your browser using WebAssembly. Adjustable cost factor, no server uploads.'
   );
 
@@ -54,7 +55,7 @@ function BcryptSection() {
   return (
     <div className="card">
       <h2>
-        <span className="card-number">04</span> bcrypt
+        <span className="card-number">04</span> B-Crypt
       </h2>
       <div className="tabs">
         <button className={tab === 'hash' ? 'active' : ''} onClick={() => setTab('hash')}>
@@ -85,11 +86,11 @@ function BcryptSection() {
                 id="bcrypt-cost"
                 type="range"
                 min={MIN_COST}
-                max={30}
+                max={20}
                 value={cost}
                 onChange={(e) => setCost(Number(e.target.value))}
               />
-              <span>30</span>
+              <span>20</span>
             </div>
             {costWarning && <p className="hint">{costWarning}</p>}
           </div>
@@ -99,7 +100,10 @@ function BcryptSection() {
           {hashResult && (
             <>
               <label style={{ marginTop: 16, display: 'block' }}>Hash</label>
-              <div className="output">{hashResult}</div>
+              <div className="output-with-copy">
+                <div className="output">{hashResult}</div>
+                <CopyButton text={hashResult} />
+              </div>
             </>
           )}
           {hashError && <div className="error">{hashError}</div>}

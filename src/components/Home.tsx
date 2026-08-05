@@ -10,7 +10,7 @@ const TOOLS = [
 
 function Home() {
   useSEO(
-    'uuidhash — Local UUID, Base64, SHA & bcrypt tools in WebAssembly',
+    'My Local Dev Tools — Local UUID, Base64, SHA & bcrypt tools in WebAssembly',
     'Free online developer tools for UUID v4 generation, Base64 encoding/decoding, SHA-1/SHA-256/SHA-512 hashing, and bcrypt password hashing. All processing runs locally in your browser via WebAssembly — no data is sent to servers.'
   );
 

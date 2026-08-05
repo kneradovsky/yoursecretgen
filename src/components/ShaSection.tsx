@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useSEO } from '../hooks/useSEO';
+import CopyButton from './CopyButton';
 import { sha1, sha256, sha512 } from '../wasm';
 
 type Algorithm = 'sha1' | 'sha256' | 'sha512';
@@ -12,7 +13,7 @@ const ALGORITHMS: { value: Algorithm; label: string }[] = [
 
 function ShaSection() {
   useSEO(
-    'SHA-1 / SHA-256 / SHA-512 Hash Generator — uuidhash',
+    'SHA-1 / SHA-256 / SHA-512 Hash Generator — My Local Dev Tools',
     'Compute SHA-1, SHA-256 and SHA-512 hash values locally in your browser using WebAssembly. Fast, private, no server uploads.'
   );
 
@@ -65,7 +66,10 @@ function ShaSection() {
       {hash && (
         <>
           <label>Hash (hex)</label>
-          <div className="output">{hash}</div>
+          <div className="output-with-copy">
+            <div className="output">{hash}</div>
+            <CopyButton text={hash} />
+          </div>
         </>
       )}
     </div>
