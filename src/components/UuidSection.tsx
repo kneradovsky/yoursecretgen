@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSEO } from '../hooks/useSEO';
 import { uuid_v4 } from '../wasm';
+import CopyButton from './CopyButton';
 
 function UuidSection() {
   useSEO(
@@ -14,11 +15,6 @@ function UuidSection() {
     setValue(uuid_v4());
   };
 
-  const handleCopy = () => {
-    if (value) {
-      navigator.clipboard.writeText(value);
-    }
-  };
 
   useEffect(() => {
     handleGenerate()
@@ -31,11 +27,10 @@ function UuidSection() {
       </h2>
       <div className="row">
         <button onClick={handleGenerate}>Generate</button>
-        <button className="secondary" onClick={handleCopy} disabled={!value}>
-          Copy
-        </button>
       </div>
-      {value && <div className="output">{value}</div>}
+      <div className="output-with-copy">
+      {value && <div className="output">{value}</div>}<CopyButton text={value}/>
+      </div>
       <p className="hint">Generated locally in WebAssembly, nothing leaves your browser.</p>
     </div>
   );

@@ -1,0 +1,11 @@
+# Caddy configuration for the uuidhash SPA.
+# Set SITE_ADDRESS to your real domain in docker-compose.yml (e.g. example.com).
+# Caddy will automatically obtain and renew Let's Encrypt certificates.
+# For local testing the default value is localhost.
+
+{$SITE_ADDRESS:localhost}
+
+root * /srv
+file_server
+
+try_files {path} /index.html

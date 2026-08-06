@@ -30,11 +30,6 @@ function Home() {
         No servers, no tracking, no network requests.
       </p>
 
-      <div className="home-actions">
-        <Link to="/uuid" className="primary">Get started</Link>
-        <Link to="/sha" className="secondary">SHA hashes</Link>
-      </div>
-
       <div className="features">
         {TOOLS.map((tool) => (
           <Link key={tool.to} to={tool.to} className="feature-card" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -46,7 +41,7 @@ function Home() {
 
       <div className="seo-text">
         <p>
-          <strong>uuidhash</strong> is a free, privacy-first developer toolkit.
+          <strong>Local Dev tools</strong> is a free, privacy-first developer toolkit.
           Use it as a <strong>UUID generator</strong>, <strong>Base64 encoder and decoder</strong>,
           <strong> SHA-1 / SHA-256 / SHA-512 hash generator</strong>, or
           <strong> bcrypt hash and verify tool</strong>. Everything is compiled to WebAssembly and runs

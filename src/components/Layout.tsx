@@ -10,7 +10,7 @@ function Layout({ children }: LayoutProps) {
     <div className="container">
       <header>
         <NavLink to="/" style={{ textDecoration: 'none' }}>
-          <h1>Yours only Generators</h1>
+          <h1>Local Developer Tools</h1>
         </NavLink>
         <nav>
           <NavLink to="/uuid">UUID</NavLink>
@@ -32,7 +32,7 @@ function Layout({ children }: LayoutProps) {
           >
             GitHub
           </a>
-          <a href="https://donatr.ee/kneradovsky" target="_blank" rel="noopener noreferrer">
+          <a href="https://donatr.ee/papacoder" target="_blank" rel="noopener noreferrer">
             Donate
           </a>
         </div>

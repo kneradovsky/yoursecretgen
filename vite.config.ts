@@ -4,6 +4,9 @@ import wasm from 'vite-plugin-wasm';
 
 export default defineConfig({
   plugins: [react(), wasm()],
+  build: {
+    target: 'es2022',
+  },
   server: {
     historyApiFallback: true,
   },

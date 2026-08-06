@@ -5,8 +5,11 @@ import UuidSection from './components/UuidSection';
 import Base64Section from './components/Base64Section';
 import ShaSection from './components/ShaSection';
 import BcryptSection from './components/BcryptSection';
+import { useAnalytics } from './hooks/useAnalytics';
 
 function App() {
+  useAnalytics();
+
   return (
     <Layout>
       <Routes>
