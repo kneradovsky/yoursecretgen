@@ -135,6 +135,56 @@ nav a.active {
   text-decoration: underline;
 }
 
+.footer-crypto {
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+}
+
+.footer-crypto-title {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.footer-crypto-list {
+  display: grid;
+  gap: 12px;
+}
+
+.footer-crypto-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 0.88rem;
+}
+
+.footer-crypto-label {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.footer-crypto-address {
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  text-align: left;
+  max-width: 100%;
+}
+
+.footer-crypto-item .copy-button {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  min-height: 32px;
+}
+
 .output-with-copy {
   display: flex;
   align-items: stretch;
