@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://uuidhash.dev/</loc>
+    <loc>https://mylocaltools.dev/</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://uuidhash.dev/uuid</loc>
+    <loc>https://mylocaltools.dev/uuid</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://uuidhash.dev/base64</loc>
+    <loc>https://mylocaltools.dev/base64</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://uuidhash.dev/sha</loc>
+    <loc>https://mylocaltools.dev/sha</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://uuidhash.dev/bcrypt</loc>
+    <loc>https://mylocaltools.dev/bcrypt</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 </urlset>

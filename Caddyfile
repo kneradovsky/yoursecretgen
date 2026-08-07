@@ -1,11 +1,16 @@
-# Caddy configuration for the uuidhash SPA.
+# Caddy configuration for the prerendered SPA.
 # Set SITE_ADDRESS to your real domain in docker-compose.yml (e.g. example.com).
 # Caddy will automatically obtain and renew Let's Encrypt certificates.
 # For local testing the default value is localhost.
+#
+# Prerendered pages are served as <route>/index.html (e.g. /srv/uuid/index.html).
+# Unknown routes fall back to /index.html for client-side React Router navigation.
 
 {$SITE_ADDRESS:localhost}
 
 root * /srv
-file_server
+file_server {
+    index index.html
+}
 
-try_files {path} /index.html
+try_files {path} {path}/index.html /index.html

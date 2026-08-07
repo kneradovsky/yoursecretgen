@@ -6,6 +6,8 @@
     "dev": "vite",
     "wasm": "cd wasm-crate && wasm-pack build --target bundler --out-dir pkg",
     "build": "npm run wasm && tsc && vite build",
+    "prerender": "node scripts/prerender.js",
+    "build:prerender": "npm run build && npm run prerender",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -17,6 +19,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "puppeteer": "^24.15.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.0",
     "vite-plugin-wasm": "^3.3.0"

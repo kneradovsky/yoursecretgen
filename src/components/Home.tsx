@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useSEO } from '../hooks/useSEO';
+
+const SITE_URL = 'https://mylocaltools.dev';
 
 const TOOLS = [
   { to: '/uuid', title: 'UUID v4', desc: 'Generate random UUIDs instantly.' },
@@ -8,11 +11,37 @@ const TOOLS = [
   { to: '/bcrypt', title: 'bcrypt', desc: 'Hash and verify passwords with adjustable cost.' },
 ];
 
+const JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'My Local Dev Tools',
+  url: SITE_URL,
+  description:
+    'Free privacy-first developer tools: UUID v4 generator, Base64 encoder/decoder, SHA-1/SHA-256/SHA-512 hash generator, and bcrypt hash verifier. All runs locally in WebAssembly.',
+  sameAs: ['https://github.com/kneradovsky/yoursecretgen'],
+};
+
 function Home() {
   useSEO(
-    'My Local Dev Tools — Local UUID, Base64, SHA & bcrypt tools in WebAssembly',
-    'Free online developer tools for UUID v4 generation, Base64 encoding/decoding, SHA-1/SHA-256/SHA-512 hashing, and bcrypt password hashing. All processing runs locally in your browser via WebAssembly — no data is sent to servers.'
+    'My Local Dev Tools — Free Local UUID, Base64, SHA & bcrypt Tools',
+    'Free privacy-first developer tools: UUID v4 generator, Base64 encoder/decoder, SHA-1/SHA-256/SHA-512 hash generator, and bcrypt hash verifier. All runs locally in WebAssembly — no data sent to servers.',
+    '/'
   );
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'jsonld-website';
+    script.text = JSON.stringify(JSON_LD);
+    document.head.appendChild(script);
+
+    return () => {
+      const existing = document.getElementById('jsonld-website');
+      if (existing) {
+        existing.remove();
+      }
+    };
+  }, []);
 
   return (
     <div className="home">

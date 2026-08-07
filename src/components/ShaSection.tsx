@@ -13,8 +13,9 @@ const ALGORITHMS: { value: Algorithm; label: string }[] = [
 
 function ShaSection() {
   useSEO(
-    'SHA-1 / SHA-256 / SHA-512 Hash Generator — My Local Dev Tools',
-    'Compute SHA-1, SHA-256 and SHA-512 hash values locally in your browser using WebAssembly. Fast, private, no server uploads.'
+    'SHA-1 / SHA-256 / SHA-512 Hash Generator — Free Online',
+    'Free online SHA hash generator. Compute SHA-1, SHA-256 and SHA-512 hashes locally in your browser with WebAssembly. No server uploads, private and fast.',
+    '/sha'
   );
 
   const [input, setInput] = useState('');
@@ -33,46 +34,56 @@ function ShaSection() {
   }, [input, algorithm]);
 
   return (
-    <div className="card">
-      <h2>
-        <span className="card-number">03</span> SHA hashes
-      </h2>
-      <div className="field">
-        <label htmlFor="sha-input">Input string</label>
-        <textarea
-          id="sha-input"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type text here..."
-        />
-      </div>
-      <div className="field">
-        <label>Algorithm</label>
-        <div className="row">
-          {ALGORITHMS.map((alg) => (
-            <label key={alg.value} className="checkbox">
-              <input
-                type="radio"
-                name="sha-algorithm"
-                value={alg.value}
-                checked={algorithm === alg.value}
-                onChange={() => setAlgorithm(alg.value)}
-              />
-              {alg.label}
-            </label>
-          ))}
+    <>
+      <h1 className="page-title">SHA-1 / SHA-256 / SHA-512 Hash Generator</h1>
+      <div className="card">
+        <h2>
+          <span className="card-number">03</span> SHA hashes
+        </h2>
+        <div className="field">
+          <label htmlFor="sha-input">Input string</label>
+          <textarea
+            id="sha-input"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type text here..."
+          />
         </div>
-      </div>
-      {hash && (
-        <>
-          <label>Hash (hex)</label>
-          <div className="output-with-copy">
-            <div className="output">{hash}</div>
-            <CopyButton text={hash} />
+        <div className="field">
+          <label>Algorithm</label>
+          <div className="row">
+            {ALGORITHMS.map((alg) => (
+              <label key={alg.value} className="checkbox">
+                <input
+                  type="radio"
+                  name="sha-algorithm"
+                  value={alg.value}
+                  checked={algorithm === alg.value}
+                  onChange={() => setAlgorithm(alg.value)}
+                />
+                {alg.label}
+              </label>
+            ))}
           </div>
-        </>
-      )}
-    </div>
+        </div>
+        {hash && (
+          <>
+            <label>Hash (hex)</label>
+            <div className="output-with-copy">
+              <div className="output">{hash}</div>
+              <CopyButton text={hash} />
+            </div>
+          </>
+        )}
+      </div>
+      <div className="seo-text">
+        <p>
+          Compute <strong>SHA-1, SHA-256 and SHA-512 hashes</strong> instantly in your browser.
+          This free online hash generator uses WebAssembly for fast local processing:
+          your input never leaves the device, so it is safe for sensitive strings and passwords.
+        </p>
+      </div>
+    </>
   );
 }
 

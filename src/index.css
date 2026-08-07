@@ -214,6 +214,17 @@ nav a.active {
   -webkit-backdrop-filter: blur(16px);
 }
 
+.page-title {
+  margin: 0 0 20px;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .card h2 {
   margin: 0 0 20px;
   font-size: 1.2rem;

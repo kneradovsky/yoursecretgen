@@ -5,8 +5,9 @@ import { base64_encode, base64_decode } from '../wasm';
 
 function Base64Section() {
   useSEO(
-    'Base64 Encode / Decode — My Local Dev Tools',
-    'Encode and decode standard or URL-safe Base64 strings locally in your browser using WebAssembly. No data is sent to any server.'
+    'Base64 Encode / Decode — Free Online Base64 Tool',
+    'Encode and decode standard or URL-safe Base64 strings online. Free, private, WebAssembly-powered — your data never leaves the browser.',
+    '/base64'
   );
 
   const [input, setInput] = useState('');
@@ -33,43 +34,53 @@ function Base64Section() {
   };
 
   return (
-    <div className="card">
-      <h2>
-        <span className="card-number">02</span> Base64 encode / decode
-      </h2>
-      <div className="field">
-        <label htmlFor="base64-input">Input</label>
-        <textarea
-          id="base64-input"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type text here..."
-        />
-      </div>
-      <div className="row">
-        <label className="checkbox">
-          <input
-            type="checkbox"
-            checked={urlSafe}
-            onChange={(e) => setUrlSafe(e.target.checked)}
+    <>
+      <h1 className="page-title">Base64 Encode / Decode</h1>
+      <div className="card">
+        <h2>
+          <span className="card-number">02</span> Base64 encode / decode
+        </h2>
+        <div className="field">
+          <label htmlFor="base64-input">Input</label>
+          <textarea
+            id="base64-input"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type text here..."
           />
-          URL-safe alphabet
-        </label>
-      </div>
-      <div className="row">
-        <button onClick={handleEncode}>Encode</button>
-        <button className="secondary" onClick={handleDecode}>
-          Decode
-        </button>
-      </div>
-      {output && (
-        <div className="output-with-copy">
-          <div className="output">{output}</div>
-          <CopyButton text={output} />
         </div>
-      )}
-      {error && <div className="error">{error}</div>}
-    </div>
+        <div className="row">
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              checked={urlSafe}
+              onChange={(e) => setUrlSafe(e.target.checked)}
+            />
+            URL-safe alphabet
+          </label>
+        </div>
+        <div className="row">
+          <button onClick={handleEncode}>Encode</button>
+          <button className="secondary" onClick={handleDecode}>
+            Decode
+          </button>
+        </div>
+        {output && (
+          <div className="output-with-copy">
+            <div className="output">{output}</div>
+            <CopyButton text={output} />
+          </div>
+        )}
+        {error && <div className="error">{error}</div>}
+      </div>
+      <div className="seo-text">
+        <p>
+          Encode and decode <strong>Base64 strings</strong> online with optional URL-safe alphabet support.
+          This free Base64 encoder and decoder runs entirely in your browser via WebAssembly,
+          making it safe for sensitive data — nothing is uploaded to a server.
+        </p>
+      </div>
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://uuidhash.dev/sitemap.xml
+Sitemap: https://mylocaltools.dev/sitemap.xml
