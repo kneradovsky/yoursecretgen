@@ -374,6 +374,33 @@ button.outline:hover:not(:disabled) {
   color: var(--text);
 }
 
+.json-output {
+  white-space: pre-wrap;
+  tab-size: 2;
+  overflow-x: auto;
+}
+
+.json-key {
+  color: #93c5fd;
+}
+
+.json-string {
+  color: #86efac;
+}
+
+.json-number {
+  color: #fca5a5;
+}
+
+.json-literal {
+  color: #c084fc;
+}
+
+.json-bracket,
+.json-colon {
+  color: var(--text-muted);
+}
+
 .error {
   color: var(--error);
   font-size: 0.95rem;

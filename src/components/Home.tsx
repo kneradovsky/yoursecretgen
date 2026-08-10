@@ -9,6 +9,7 @@ const TOOLS = [
   { to: '/base64', title: 'Base64', desc: 'Encode and decode standard or URL-safe Base64.' },
   { to: '/sha', title: 'SHA hashes', desc: 'Compute SHA-1, SHA-256 and SHA-512 hashes.' },
   { to: '/bcrypt', title: 'bcrypt', desc: 'Hash and verify passwords with adjustable cost.' },
+  { to: '/json', title: 'JSON', desc: 'Format, validate and minify JSON in the browser.' },
 ];
 
 const JSON_LD = {
@@ -17,14 +18,14 @@ const JSON_LD = {
   name: 'My Local Dev Tools',
   url: SITE_URL,
   description:
-    'Free privacy-first developer tools: UUID v4 generator, Base64 encoder/decoder, SHA-1/SHA-256/SHA-512 hash generator, and bcrypt hash verifier. All runs locally in WebAssembly.',
+    'Free privacy-first developer tools: UUID v4 generator, Base64 encoder/decoder, SHA-1/SHA-256/SHA-512 hash generator, bcrypt hash verifier, and JSON formatter/validator. All runs locally in WebAssembly.',
   sameAs: ['https://github.com/kneradovsky/yoursecretgen'],
 };
 
 function Home() {
   useSEO(
-    'My Local Dev Tools — Free Local UUID, Base64, SHA & bcrypt Tools',
-    'Free privacy-first developer tools: UUID v4 generator, Base64 encoder/decoder, SHA-1/SHA-256/SHA-512 hash generator, and bcrypt hash verifier. All runs locally in WebAssembly — no data sent to servers.',
+    'My Local Dev Tools — Free Local UUID, Base64, SHA, bcrypt & JSON Tools',
+    'Free privacy-first developer tools: UUID v4 generator, Base64 encoder/decoder, SHA-1/SHA-256/SHA-512 hash generator, bcrypt hash verifier, and JSON formatter/validator. All runs locally in WebAssembly — no data sent to servers.',
     '/'
   );
 
@@ -72,8 +73,8 @@ function Home() {
         <p>
           <strong>Local Dev tools</strong> is a free, privacy-first developer toolkit.
           Use it as a <strong>UUID generator</strong>, <strong>Base64 encoder and decoder</strong>,
-          <strong> SHA-1 / SHA-256 / SHA-512 hash generator</strong>, or
-          <strong> bcrypt hash and verify tool</strong>. Everything is compiled to WebAssembly and runs
+          <strong> SHA-1 / SHA-256 / SHA-512 hash generator</strong>, <strong>bcrypt hash and verify tool</strong>,
+          or <strong>JSON formatter and validator</strong>. Everything is compiled to WebAssembly and runs
           entirely in your browser, so sensitive strings, passwords and identifiers never touch a server.
         </p>
       </div>

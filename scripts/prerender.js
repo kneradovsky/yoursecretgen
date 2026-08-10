@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.resolve(__dirname, '../dist');
 const PORT = 3456;
-const ROUTES = ['/', '/uuid', '/base64', '/sha', '/bcrypt'];
+const ROUTES = ['/', '/uuid', '/base64', '/sha', '/bcrypt', '/json'];
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -27,16 +27,28 @@ const MIME_TYPES = {
 async function serveStatic(root, port) {
   const server = createServer(async (req, res) => {
     const pathname = req.url.split('?')[0];
-    let filePath = path.join(root, pathname === '/' ? 'index.html' : pathname);
+    const ext = path.extname(pathname);
 
-    try {
-      const stat = await fs.stat(filePath);
-      if (stat.isDirectory()) {
-        filePath = path.join(filePath, 'index.html');
+    // Serve real asset files (JS, CSS, WASM, images, etc.) directly.
+    if (ext && ext !== '.html') {
+      const assetPath = path.join(root, pathname);
+      try {
+        const content = await fs.readFile(assetPath);
+        res.writeHead(200, { 'Content-Type': MIME_TYPES[ext] || 'application/octet-stream' });
+        res.end(content);
+        return;
+      } catch {
+        res.writeHead(404);
+        res.end('Not found');
+        return;
       }
-      const content = await fs.readFile(filePath);
-      const ext = path.extname(filePath);
-      res.writeHead(200, { 'Content-Type': MIME_TYPES[ext] || 'application/octet-stream' });
+    }
+
+    // For HTML pages and SPA routes, always fall back to the root index.html
+    // so React Router can render the correct route during prerendering.
+    try {
+      const content = await fs.readFile(path.join(root, 'index.html'));
+      res.writeHead(200, { 'Content-Type': 'text/html' });
       res.end(content);
     } catch {
       res.writeHead(404);

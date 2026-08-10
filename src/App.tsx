@@ -5,6 +5,7 @@ import UuidSection from './components/UuidSection';
 import Base64Section from './components/Base64Section';
 import ShaSection from './components/ShaSection';
 import BcryptSection from './components/BcryptSection';
+import JsonSection from './components/JsonSection';
 import { useAnalytics } from './hooks/useAnalytics';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/base64" element={<Base64Section />} />
         <Route path="/sha" element={<ShaSection />} />
         <Route path="/bcrypt" element={<BcryptSection />} />
+        <Route path="/json" element={<JsonSection />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

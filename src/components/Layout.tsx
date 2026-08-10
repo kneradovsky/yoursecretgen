@@ -29,6 +29,7 @@ function Layout({ children }: LayoutProps) {
           <NavLink to="/base64">Base64</NavLink>
           <NavLink to="/sha">SHA</NavLink>
           <NavLink to="/bcrypt">B-Crypt</NavLink>
+          <NavLink to="/json">JSON</NavLink>
         </nav>
       </header>
       <main>{children}</main>
