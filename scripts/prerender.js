@@ -73,6 +73,18 @@ async function cleanupInjectedGtagScripts(page) {
 }
 
 async function main() {
+  // The static server falls back to dist/index.html for every route. If the
+  // build hasn't been run, the server will return a plain 404 page and
+  // Puppeteer will happily write that 404 into every prerendered file.
+  const indexHtmlPath = path.join(DIST_DIR, 'index.html');
+  try {
+    await fs.access(indexHtmlPath);
+  } catch {
+    throw new Error(
+      `dist/index.html is missing. Run \`npm run build\` before \`npm run prerender\`.`
+    );
+  }
+
   const server = await serveStatic(DIST_DIR, PORT);
 
   const browser = await puppeteer.launch({
@@ -85,7 +97,13 @@ async function main() {
 
     for (const route of ROUTES) {
       const url = `http://localhost:${PORT}${route}`;
-      await page.goto(url, { waitUntil: 'networkidle2' });
+      const response = await page.goto(url, { waitUntil: 'networkidle2' });
+      if (!response || response.status() >= 400) {
+        throw new Error(
+          `Prerender of ${route} failed with HTTP ${response ? response.status() : 'no response'}.` +
+            ' Make sure the build produced a valid dist/index.html.'
+        );
+      }
       await cleanupInjectedGtagScripts(page);
 
       const html = await page.content();
