@@ -38,10 +38,16 @@
         window.gtag = gtag;
         gtag('js', new Date());
         gtag('config', gaId);
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId);
-        document.head.appendChild(script);
+        // Defer past the load event so a slow/blocked gtag request cannot
+        // hold up the page's load event (tab would spin indefinitely).
+        window.addEventListener('load', function () {
+          setTimeout(function () {
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId);
+            document.head.appendChild(script);
+          }, 0);
+        });
       })();
     </script>
   </head>

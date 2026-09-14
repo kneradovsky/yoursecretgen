@@ -8,9 +8,8 @@ export default defineConfig({
     target: 'es2022',
   },
   server: {
-    historyApiFallback: true,
+    host: true,
   },
   preview: {
-    historyApiFallback: true,
   },
 });

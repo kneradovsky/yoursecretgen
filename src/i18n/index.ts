@@ -45,9 +45,9 @@ function renderValue(value: string, options?: TranslateOptions): ReactNode {
 
   const parts: ReactNode[] = [];
   let lastIndex = 0;
-  TAG_PATTERN.lastIndex = 0;
-  let match: RegExpExecArray | null;
-  while ((match = TAG_PATTERN.exec(withParams)) !== null) {
+  // matchAll clones the global regex per call, so the recursive renderValue
+  // below cannot reset the outer loop's lastIndex mid-iteration.
+  for (const match of withParams.matchAll(TAG_PATTERN)) {
     if (match.index > lastIndex) parts.push(withParams.slice(lastIndex, match.index));
     const renderTag = options[match[1]];
     const children: ReactNode = renderValue(match[2], options);
