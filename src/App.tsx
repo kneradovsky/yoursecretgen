@@ -39,14 +39,16 @@ function App() {
 
   return (
     <Routes>
-      <Route element={<Layout />}>
-        <Route element={<LangGate lang={DEFAULT_LANG} />}>
+      <Route element={<LangGate lang={DEFAULT_LANG} />}>
+        <Route element={<Layout />}>
           <Route index element={<Home />} />
           {SECTION_ROUTES.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
           ))}
         </Route>
-        <Route path=":lang" element={<LangParamGate />}>
+      </Route>
+      <Route path=":lang" element={<LangParamGate />}>
+        <Route element={<Layout />}>
           <Route index element={<Home />} />
           {SECTION_ROUTES.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />

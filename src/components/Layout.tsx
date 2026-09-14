@@ -1,17 +1,17 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import CopyButton from './CopyButton';
+//import CopyButton from './CopyButton';
 import { LANGS, localizedPath, stripLangPrefix, useI18n } from '../i18n';
 
-const CRYPTO_WALLETS = [
-  {
-    label: 'ETH / USDT ERC-20',
-    address: '0xDa38844fa26F1578f92da87dB694a5Fb9d6D8A10',
-  },
-  {
-    label: 'USDT TRC-20',
-    address: 'TMk88HUEf2Hnk8E1AXZLGBia7vZJ4Gu47s',
-  },
-];
+// const CRYPTO_WALLETS = [
+//   {
+//     label: 'ETH / USDT ERC-20',
+//     address: '0xDa38844fa26F1578f92da87dB694a5Fb9d6D8A10',
+//   },
+//   {
+//     label: 'USDT TRC-20',
+//     address: 'TMk88HUEf2Hnk8E1AXZLGBia7vZJ4Gu47s',
+//   },
+// ];
 
 function Layout() {
   const { lang, t } = useI18n();
@@ -50,7 +50,7 @@ function Layout() {
       </main>
       <footer className="footer">
         <p className="footer-privacy">{t('footer.privacy')}</p>
-        <div className="footer-crypto">
+        {/* <div className="footer-crypto">
           <span className="footer-crypto-title">{t('footer.cryptoTitle')}</span>
           <div className="footer-crypto-list">
             {CRYPTO_WALLETS.map((wallet) => (
@@ -61,7 +61,7 @@ function Layout() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
         <div className="footer-links">
           <a
             href="https://github.com/kneradovsky/yoursecretgen"
