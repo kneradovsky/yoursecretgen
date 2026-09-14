@@ -111,14 +111,6 @@ async function main() {
         request.continue();
       }
     });
-    page.on('requestfinished', (r) => {console.log('FIN', r.url());r.response().content().then(c=>{if(!r.url().includes("assets")) console.log(new TextDecoder().decode(c))})});
-    page.on('requestfailed', (r) => console.log('FAILED', r.url(), r.failure()?.errorText));
-    page.on('load', () => console.log('LOAD EVENT'));
-    const inflight = new Set();
-    page.on('request', (r) => inflight.add(r.url()));
-    page.on('requestfinished', (r) => inflight.delete(r.url()));
-    page.on('requestfailed', (r) => inflight.delete(r.url()));
-    setTimeout(() => console.log('INFLIGHT AFTER 20s:', [...inflight]), 20000);
 
     for (const route of ROUTES) {
       const url = `http://localhost:${PORT}${route}`;

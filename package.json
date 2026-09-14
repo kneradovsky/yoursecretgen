@@ -7,7 +7,8 @@
     "wasm": "cd wasm-crate && wasm-pack build --target bundler --out-dir pkg",
     "build": "npm run wasm && tsc && vite build",
     "prerender": "node scripts/prerender.js",
-    "build:prerender": "npm run build && npm run prerender",
+    "seo": "node scripts/generate-seo-files.mjs",
+    "build:prerender": "npm run build && npm run seo && npm run prerender",
     "preview": "vite preview"
   },
   "dependencies": {

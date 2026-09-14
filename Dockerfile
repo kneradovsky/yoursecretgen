@@ -66,6 +66,9 @@ COPY . .
 ARG VITE_GA_MEASUREMENT_ID
 ENV VITE_GA_MEASUREMENT_ID=$VITE_GA_MEASUREMENT_ID
 
+ARG VITE_SITE_URL=https://mylocaltools.dev
+ENV VITE_SITE_URL=$VITE_SITE_URL
+
 RUN . "$HOME/.cargo/env" && npm run build:prerender
 
 # Stage 2: serve static files with Caddy

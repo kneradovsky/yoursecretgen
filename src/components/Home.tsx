@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useSEO } from '../hooks/useSEO';
 import { localizedPath, useI18n } from '../i18n';
 
-const SITE_URL = 'https://mylocaltools.dev';
+const SITE_URL = import.meta.env.VITE_SITE_URL;
 
 const TOOL_KEYS = ['uuid', 'base64', 'sha', 'bcrypt', 'json'] as const;
 

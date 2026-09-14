@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { LANGS, localizedPath, useI18n, type Lang } from '../i18n';
 
-const SITE_URL = 'https://mylocaltools.dev';
+const SITE_URL = import.meta.env.VITE_SITE_URL;
 const OG_IMAGE_URL = `${SITE_URL}/og-image.svg`;
 const HREFLANG_ATTR = 'data-i18n-alternate';
 
