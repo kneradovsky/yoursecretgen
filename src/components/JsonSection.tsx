@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useSEO } from '../hooks/useSEO';
 import CopyButton from './CopyButton';
+import { plural, useI18n } from '../i18n';
 
 const DEFAULT_INDENT = 2;
 
@@ -36,11 +37,9 @@ function highlightJson(json: string): string {
 }
 
 function JsonSection() {
-  useSEO(
-    'JSON Formatter — Free Online JSON Beautifier & Validator',
-    'Format, beautify, validate and minify JSON online. Free, private, browser-based JSON formatter — your data never leaves the browser.',
-    '/json'
-  );
+  const { lang, t } = useI18n();
+
+  useSEO(t('json.seoTitle') as string, t('json.seoDescription') as string, '/json');
 
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
@@ -57,7 +56,7 @@ function JsonSection() {
       const parsed = JSON.parse(input);
       setOutput(JSON.stringify(parsed, null, indent));
     } catch (e) {
-      setError(`Invalid JSON: ${String(e)}`);
+      setError(`${t('common.invalidJson')} ${String(e)}`);
       setOutput('');
     }
   }, [input, indent]);
@@ -72,7 +71,7 @@ function JsonSection() {
       const parsed = JSON.parse(input);
       setOutput(JSON.stringify(parsed));
     } catch (e) {
-      setError(`Invalid JSON: ${String(e)}`);
+      setError(`${t('common.invalidJson')} ${String(e)}`);
       setOutput('');
     }
   }, [input]);
@@ -89,15 +88,23 @@ function JsonSection() {
     }
   }, [output, error, input]);
 
+  const spacesLabel = plural(
+    lang,
+    indent,
+    t('json.spaceOne') as string,
+    t('json.spaceFew') as string,
+    t('json.spaceMany') as string
+  );
+
   return (
     <>
-      <h1 className="page-title">JSON Formatter</h1>
+      <h1 className="page-title">{t('json.pageTitle')}</h1>
       <div className="card">
         <h2>
-          <span className="card-number">05</span> JSON format / minify
+          <span className="card-number">{t('json.cardNumber')}</span> {t('json.cardTitle')}
         </h2>
         <div className="field">
-          <label htmlFor="json-input">Input JSON</label>
+          <label htmlFor="json-input">{t('json.inputLabel')}</label>
           <textarea
             id="json-input"
             value={input}
@@ -106,7 +113,7 @@ function JsonSection() {
           />
         </div>
         <div className="slider-row">
-          <label htmlFor="json-indent">Indent:</label>
+          <label htmlFor="json-indent">{t('json.indentLabel')}</label>
           <input
             id="json-indent"
             type="range"
@@ -116,12 +123,12 @@ function JsonSection() {
             value={indent}
             onChange={(e) => handleIndentChange(Number(e.target.value))}
           />
-          <span className="slider-value">{indent}&nbsp;spaces</span>
+          <span className="slider-value">{indent}&nbsp;{spacesLabel}</span>
         </div>
         <div className="row">
-          <button onClick={handleFormat}>Format</button>
+          <button onClick={handleFormat}>{t('json.format')}</button>
           <button className="secondary" onClick={handleMinify}>
-            Minify
+            {t('json.minify')}
           </button>
         </div>
         {output && !error && (
@@ -136,11 +143,7 @@ function JsonSection() {
         {error && <div className="error">{error}</div>}
       </div>
       <div className="seo-text">
-        <p>
-          Format and validate <strong>JSON</strong> online with this free privacy-first formatter.
-          Paste raw JSON, click <strong>Format</strong> to beautify it, or <strong>Minify</strong> to compress it.
-          Everything runs in your browser — no data is uploaded to a server.
-        </p>
+        <p>{t('json.seoText', { b: (children) => <strong>{children}</strong> })}</p>
       </div>
     </>
   );

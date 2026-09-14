@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useI18n } from '../i18n';
 
 interface CopyButtonProps {
   text: string;
@@ -6,6 +7,7 @@ interface CopyButtonProps {
 }
 
 function CopyButton({ text, disabled }: CopyButtonProps) {
+  const { t } = useI18n();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -23,7 +25,7 @@ function CopyButton({ text, disabled }: CopyButtonProps) {
       disabled={disabled || !text}
       type="button"
     >
-      {copied ? 'Copied!' : 'Copy'}
+      {copied ? t('common.copied') : t('common.copy')}
     </button>
   );
 }

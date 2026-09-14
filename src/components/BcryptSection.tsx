@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { useSEO } from '../hooks/useSEO';
 import CopyButton from './CopyButton';
+import { useI18n } from '../i18n';
 import { bcrypt_hash, bcrypt_verify } from '../wasm';
 
 type Tab = 'hash' | 'verify';
 
 function BcryptSection() {
-  useSEO(
-    'bcrypt Hash & Verify — Free Online Password Hash Tool',
-    'Generate and verify bcrypt password hashes online with adjustable cost factor. Runs locally in WebAssembly — passwords never leave your browser.',
-    '/bcrypt'
-  );
+  const { t } = useI18n();
+
+  useSEO(t('bcrypt.seoTitle') as string, t('bcrypt.seoDescription') as string, '/bcrypt');
 
   const [tab, setTab] = useState<Tab>('hash');
 
@@ -51,38 +50,40 @@ function BcryptSection() {
     }
   };
 
-  const costWarning = cost > 15 ? 'High cost values can be very slow in the browser.' : '';
+  const costWarning = cost > 15 ? t('bcrypt.costWarning') : '';
 
   return (
     <>
-      <h1 className="page-title">bcrypt Hash & Verify</h1>
+      <h1 className="page-title">{t('bcrypt.pageTitle')}</h1>
       <div className="card">
         <h2>
-          <span className="card-number">04</span> B-Crypt
+          <span className="card-number">{t('bcrypt.cardNumber')}</span> {t('bcrypt.cardTitle')}
         </h2>
         <div className="tabs">
           <button className={tab === 'hash' ? 'active' : ''} onClick={() => setTab('hash')}>
-            Hash
+            {t('bcrypt.tabHash')}
           </button>
           <button className={tab === 'verify' ? 'active' : ''} onClick={() => setTab('verify')}>
-            Verify
+            {t('bcrypt.tabVerify')}
           </button>
         </div>
 
         {tab === 'hash' ? (
           <>
             <div className="field">
-              <label htmlFor="bcrypt-password">Password</label>
+              <label htmlFor="bcrypt-password">{t('bcrypt.passwordLabel')}</label>
               <input
                 id="bcrypt-password"
                 type="text"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password..."
+                placeholder={t('bcrypt.passwordPlaceholder') as string}
               />
             </div>
             <div className="field">
-              <label htmlFor="bcrypt-cost">Cost factor: <span className="slider-value">{cost}</span></label>
+              <label htmlFor="bcrypt-cost">
+                {t('bcrypt.costLabel')} <span className="slider-value">{cost}</span>
+              </label>
               <div className="slider-row">
                 <span>{MIN_COST}</span>
                 <input
@@ -98,11 +99,11 @@ function BcryptSection() {
               {costWarning && <p className="hint">{costWarning}</p>}
             </div>
             <button onClick={handleHash} disabled={hashing || !password}>
-              {hashing ? 'Hashing...' : 'Generate hash'}
+              {hashing ? t('bcrypt.hashingButton') : t('bcrypt.hashButton')}
             </button>
             {hashResult && (
               <>
-                <label style={{ marginTop: 16, display: 'block' }}>Hash</label>
+                <label style={{ marginTop: 16, display: 'block' }}>{t('bcrypt.hashResultLabel')}</label>
                 <div className="output-with-copy">
                   <div className="output">{hashResult}</div>
                   <CopyButton text={hashResult} />
@@ -114,42 +115,38 @@ function BcryptSection() {
         ) : (
           <>
             <div className="field">
-              <label htmlFor="bcrypt-verify-password">Password</label>
+              <label htmlFor="bcrypt-verify-password">{t('bcrypt.passwordLabel')}</label>
               <input
                 id="bcrypt-verify-password"
                 type="text"
                 value={verifyPassword}
                 onChange={(e) => setVerifyPassword(e.target.value)}
-                placeholder="Enter password..."
+                placeholder={t('bcrypt.passwordPlaceholder') as string}
               />
             </div>
             <div className="field">
-              <label htmlFor="bcrypt-verify-hash">Hash</label>
+              <label htmlFor="bcrypt-verify-hash">{t('bcrypt.hashInputLabel')}</label>
               <input
                 id="bcrypt-verify-hash"
                 type="text"
                 value={verifyHash}
                 onChange={(e) => setVerifyHash(e.target.value)}
-                placeholder="$2b$10$..."
+                placeholder={t('bcrypt.hashInputPlaceholder') as string}
               />
             </div>
             <button onClick={handleVerify} disabled={verifying || !verifyPassword || !verifyHash}>
-              {verifying ? 'Verifying...' : 'Verify'}
+              {verifying ? t('bcrypt.verifyingButton') : t('bcrypt.verifyButton')}
             </button>
             {verifyResult !== null && (
               <div className={verifyResult ? 'success' : 'error'} style={{ marginTop: 12 }}>
-                {verifyResult ? 'Password matches the hash.' : 'Password does not match.'}
+                {verifyResult ? t('bcrypt.verifyMatch') : t('bcrypt.verifyNoMatch')}
               </div>
             )}
           </>
         )}
       </div>
       <div className="seo-text">
-        <p>
-          Generate and verify <strong>bcrypt password hashes</strong> online with a customizable cost factor.
-          This free bcrypt tool hashes and checks passwords locally in your browser using WebAssembly,
-          so credentials never touch a remote server.
-        </p>
+        <p>{t('bcrypt.seoText', { b: (children) => <strong>{children}</strong> })}</p>
       </div>
     </>
   );

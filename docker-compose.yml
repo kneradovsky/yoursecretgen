@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  web:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Google Analytics 4 Measurement ID (G-XXXXXXXXXX).
+        # Set in .env or export before building: export VITE_GA_MEASUREMENT_ID=G-...
+        - VITE_GA_MEASUREMENT_ID=${VITE_GA_MEASUREMENT_ID}
+    image: cr.yandex/crpgsp2at58gj0nsggn2/localtools:latest
+    container_name: uuidhash-web
+    environment:
+      # Replace with your real domain for automatic Let's Encrypt certificates.
+      # Use ":80" for plain HTTP (no HTTPS) or "localhost" for local self-signed certs.
+      - SITE_ADDRESS=${SITE_ADDRESS}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Persist Caddy data (certificates, config) across restarts.
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

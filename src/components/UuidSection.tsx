@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import { useSEO } from '../hooks/useSEO';
 import { uuid_v4 } from '../wasm';
 import CopyButton from './CopyButton';
+import { useI18n } from '../i18n';
 
 function UuidSection() {
-  useSEO(
-    'UUID v4 Generator — Free Online Random UUID Tool',
-    'Generate random UUID v4 identifiers instantly in your browser. Fast, private, WebAssembly-powered UUID generator — no data sent to any server.',
-    '/uuid'
-  );
+  const { t } = useI18n();
+
+  useSEO(t('uuid.seoTitle') as string, t('uuid.seoDescription') as string, '/uuid');
 
   const [value, setValue] = useState('');
 
@@ -23,25 +22,21 @@ function UuidSection() {
 
   return (
     <>
-      <h1 className="page-title">UUID v4 Generator</h1>
+      <h1 className="page-title">{t('uuid.pageTitle')}</h1>
       <div className="card">
         <h2>
-          <span className="card-number">01</span> UUID v4
+          <span className="card-number">{t('uuid.cardNumber')}</span> {t('uuid.cardTitle')}
         </h2>
         <div className="row">
-          <button onClick={handleGenerate}>Generate</button>
+          <button onClick={handleGenerate}>{t('uuid.generate')}</button>
         </div>
         <div className="output-with-copy">
         {value && <div className="output">{value}</div>}<CopyButton text={value}/>
         </div>
-        <p className="hint">Generated locally in WebAssembly, nothing leaves your browser.</p>
+        <p className="hint">{t('uuid.hint')}</p>
       </div>
       <div className="seo-text">
-        <p>
-          Generate <strong>random UUID v4 identifiers</strong> instantly with this free online UUID generator.
-          Every identifier is created locally in your browser using WebAssembly, so no data is transmitted to any server.
-          Use it for database keys, session IDs, API tokens, or any scenario that needs a unique, privacy-safe identifier.
-        </p>
+        <p>{t('uuid.seoText', { b: (children) => <strong>{children}</strong> })}</p>
       </div>
     </>
   );

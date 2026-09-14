@@ -1,10 +1,6 @@
-import { NavLink } from 'react-router-dom';
-import { ReactNode } from 'react';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import CopyButton from './CopyButton';
-
-interface LayoutProps {
-  children: ReactNode;
-}
+import { LANGS, localizedPath, stripLangPrefix, useI18n } from '../i18n';
 
 const CRYPTO_WALLETS = [
   {
@@ -17,28 +13,45 @@ const CRYPTO_WALLETS = [
   },
 ];
 
-function Layout({ children }: LayoutProps) {
+function Layout() {
+  const { lang, t } = useI18n();
+  const { pathname } = useLocation();
+  const sectionPath = stripLangPrefix(pathname);
+
   return (
     <div className="container">
       <header>
-        <NavLink to="/" style={{ textDecoration: 'none' }}>
-          <h1>Local Developer Tools</h1>
+        <NavLink to={localizedPath(lang, '/')} style={{ textDecoration: 'none' }}>
+          <h1>{t('siteTitle')}</h1>
         </NavLink>
+        <div className="lang-switcher" aria-label="Language">
+          {LANGS.map((lang) =>
+            localizedPath(lang, sectionPath) === pathname ? (
+              <span key={lang} className="lang-current" aria-current="true">
+                {lang.toUpperCase()}
+              </span>
+            ) : (
+              <Link key={lang} to={localizedPath(lang, sectionPath)} lang={lang}>
+                {lang.toUpperCase()}
+              </Link>
+            )
+          )}
+        </div>
         <nav>
-          <NavLink to="/uuid">UUID</NavLink>
-          <NavLink to="/base64">Base64</NavLink>
-          <NavLink to="/sha">SHA</NavLink>
-          <NavLink to="/bcrypt">B-Crypt</NavLink>
-          <NavLink to="/json">JSON</NavLink>
+          <NavLink to={localizedPath(lang, '/uuid')}>{t('nav.uuid')}</NavLink>
+          <NavLink to={localizedPath(lang, '/base64')}>{t('nav.base64')}</NavLink>
+          <NavLink to={localizedPath(lang, '/sha')}>{t('nav.sha')}</NavLink>
+          <NavLink to={localizedPath(lang, '/bcrypt')}>{t('nav.bcrypt')}</NavLink>
+          <NavLink to={localizedPath(lang, '/json')}>{t('nav.json')}</NavLink>
         </nav>
       </header>
-      <main>{children}</main>
+      <main>
+        <Outlet />
+      </main>
       <footer className="footer">
-        <p className="footer-privacy">
-          All transformations are performed in your browser only. No data sent to any server.
-        </p>
+        <p className="footer-privacy">{t('footer.privacy')}</p>
         <div className="footer-crypto">
-          <span className="footer-crypto-title">Crypto donations:</span>
+          <span className="footer-crypto-title">{t('footer.cryptoTitle')}</span>
           <div className="footer-crypto-list">
             {CRYPTO_WALLETS.map((wallet) => (
               <div key={wallet.label} className="footer-crypto-item">

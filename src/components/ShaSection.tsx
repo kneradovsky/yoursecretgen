@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useSEO } from '../hooks/useSEO';
 import CopyButton from './CopyButton';
+import { useI18n } from '../i18n';
 import { sha1, sha256, sha512 } from '../wasm';
 
 type Algorithm = 'sha1' | 'sha256' | 'sha512';
@@ -12,11 +13,9 @@ const ALGORITHMS: { value: Algorithm; label: string }[] = [
 ];
 
 function ShaSection() {
-  useSEO(
-    'SHA-1 / SHA-256 / SHA-512 Hash Generator — Free Online',
-    'Free online SHA hash generator. Compute SHA-1, SHA-256 and SHA-512 hashes locally in your browser with WebAssembly. No server uploads, private and fast.',
-    '/sha'
-  );
+  const { t } = useI18n();
+
+  useSEO(t('sha.seoTitle') as string, t('sha.seoDescription') as string, '/sha');
 
   const [input, setInput] = useState('');
   const [algorithm, setAlgorithm] = useState<Algorithm>('sha256');
@@ -35,22 +34,22 @@ function ShaSection() {
 
   return (
     <>
-      <h1 className="page-title">SHA-1 / SHA-256 / SHA-512 Hash Generator</h1>
+      <h1 className="page-title">{t('sha.pageTitle')}</h1>
       <div className="card">
         <h2>
-          <span className="card-number">03</span> SHA hashes
+          <span className="card-number">{t('sha.cardNumber')}</span> {t('sha.cardTitle')}
         </h2>
         <div className="field">
-          <label htmlFor="sha-input">Input string</label>
+          <label htmlFor="sha-input">{t('sha.inputLabel')}</label>
           <textarea
             id="sha-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type text here..."
+            placeholder={t('sha.inputPlaceholder') as string}
           />
         </div>
         <div className="field">
-          <label>Algorithm</label>
+          <label>{t('sha.algorithmLabel')}</label>
           <div className="row">
             {ALGORITHMS.map((alg) => (
               <label key={alg.value} className="checkbox">
@@ -68,7 +67,7 @@ function ShaSection() {
         </div>
         {hash && (
           <>
-            <label>Hash (hex)</label>
+            <label>{t('sha.hashLabel')}</label>
             <div className="output-with-copy">
               <div className="output">{hash}</div>
               <CopyButton text={hash} />
@@ -77,11 +76,7 @@ function ShaSection() {
         )}
       </div>
       <div className="seo-text">
-        <p>
-          Compute <strong>SHA-1, SHA-256 and SHA-512 hashes</strong> instantly in your browser.
-          This free online hash generator uses WebAssembly for fast local processing:
-          your input never leaves the device, so it is safe for sensitive strings and passwords.
-        </p>
+        <p>{t('sha.seoText', { b: (children) => <strong>{children}</strong> })}</p>
       </div>
     </>
   );

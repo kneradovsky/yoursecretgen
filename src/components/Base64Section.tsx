@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useSEO } from '../hooks/useSEO';
 import CopyButton from './CopyButton';
+import { useI18n } from '../i18n';
 import { base64_encode, base64_decode } from '../wasm';
 
 function Base64Section() {
-  useSEO(
-    'Base64 Encode / Decode — Free Online Base64 Tool',
-    'Encode and decode standard or URL-safe Base64 strings online. Free, private, WebAssembly-powered — your data never leaves the browser.',
-    '/base64'
-  );
+  const { t } = useI18n();
+
+  useSEO(t('base64.seoTitle') as string, t('base64.seoDescription') as string, '/base64');
 
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
@@ -35,18 +34,18 @@ function Base64Section() {
 
   return (
     <>
-      <h1 className="page-title">Base64 Encode / Decode</h1>
+      <h1 className="page-title">{t('base64.pageTitle')}</h1>
       <div className="card">
         <h2>
-          <span className="card-number">02</span> Base64 encode / decode
+          <span className="card-number">{t('base64.cardNumber')}</span> {t('base64.cardTitle')}
         </h2>
         <div className="field">
-          <label htmlFor="base64-input">Input</label>
+          <label htmlFor="base64-input">{t('base64.inputLabel')}</label>
           <textarea
             id="base64-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type text here..."
+            placeholder={t('base64.inputPlaceholder') as string}
           />
         </div>
         <div className="row">
@@ -56,13 +55,13 @@ function Base64Section() {
               checked={urlSafe}
               onChange={(e) => setUrlSafe(e.target.checked)}
             />
-            URL-safe alphabet
+            {t('base64.urlSafeLabel')}
           </label>
         </div>
         <div className="row">
-          <button onClick={handleEncode}>Encode</button>
+          <button onClick={handleEncode}>{t('base64.encode')}</button>
           <button className="secondary" onClick={handleDecode}>
-            Decode
+            {t('base64.decode')}
           </button>
         </div>
         {output && (
@@ -74,11 +73,7 @@ function Base64Section() {
         {error && <div className="error">{error}</div>}
       </div>
       <div className="seo-text">
-        <p>
-          Encode and decode <strong>Base64 strings</strong> online with optional URL-safe alphabet support.
-          This free Base64 encoder and decoder runs entirely in your browser via WebAssembly,
-          making it safe for sensitive data — nothing is uploaded to a server.
-        </p>
+        <p>{t('base64.seoText', { b: (children) => <strong>{children}</strong> })}</p>
       </div>
     </>
   );

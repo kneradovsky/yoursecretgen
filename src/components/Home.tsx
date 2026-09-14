@@ -1,39 +1,31 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSEO } from '../hooks/useSEO';
+import { localizedPath, useI18n } from '../i18n';
 
 const SITE_URL = 'https://mylocaltools.dev';
 
-const TOOLS = [
-  { to: '/uuid', title: 'UUID v4', desc: 'Generate random UUIDs instantly.' },
-  { to: '/base64', title: 'Base64', desc: 'Encode and decode standard or URL-safe Base64.' },
-  { to: '/sha', title: 'SHA hashes', desc: 'Compute SHA-1, SHA-256 and SHA-512 hashes.' },
-  { to: '/bcrypt', title: 'bcrypt', desc: 'Hash and verify passwords with adjustable cost.' },
-  { to: '/json', title: 'JSON', desc: 'Format, validate and minify JSON in the browser.' },
-];
-
-const JSON_LD = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'My Local Dev Tools',
-  url: SITE_URL,
-  description:
-    'Free privacy-first developer tools: UUID v4 generator, Base64 encoder/decoder, SHA-1/SHA-256/SHA-512 hash generator, bcrypt hash verifier, and JSON formatter/validator. All runs locally in WebAssembly.',
-  sameAs: ['https://github.com/kneradovsky/yoursecretgen'],
-};
+const TOOL_KEYS = ['uuid', 'base64', 'sha', 'bcrypt', 'json'] as const;
 
 function Home() {
-  useSEO(
-    'My Local Dev Tools — Free Local UUID, Base64, SHA, bcrypt & JSON Tools',
-    'Free privacy-first developer tools: UUID v4 generator, Base64 encoder/decoder, SHA-1/SHA-256/SHA-512 hash generator, bcrypt hash verifier, and JSON formatter/validator. All runs locally in WebAssembly — no data sent to servers.',
-    '/'
-  );
+  const { lang, t } = useI18n();
+
+  useSEO(t('home.seoTitle') as string, t('home.seoDescription') as string, '/');
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: t('home.jsonLdName'),
+    url: SITE_URL,
+    description: t('home.jsonLdDescription'),
+    sameAs: ['https://github.com/kneradovsky/yoursecretgen'],
+  };
 
   useEffect(() => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.id = 'jsonld-website';
-    script.text = JSON.stringify(JSON_LD);
+    script.text = JSON.stringify(jsonLd);
     document.head.appendChild(script);
 
     return () => {
@@ -42,41 +34,41 @@ function Home() {
         existing.remove();
       }
     };
-  }, []);
+  });
 
   return (
     <div className="home">
       <div className="badge">
-        <span className="lock-icon" aria-hidden="true">🔒</span>
-        100% local processing
+        <span className="lock-icon" aria-hidden="true">
+          🔒
+        </span>
+        {t('home.badge')}
       </div>
 
       <h1>
-        Your data <span className="gradient">never leaves</span> your browser
+        {t('home.titleA')}
+        <span className="gradient">{t('home.titleB')}</span>
+        {t('home.titleC')}
       </h1>
 
-      <p className="home-subtitle">
-        All hashing, encoding and generation runs inside WebAssembly on your device.
-        No servers, no tracking, no network requests.
-      </p>
+      <p className="home-subtitle">{t('home.subtitle')}</p>
 
       <div className="features">
-        {TOOLS.map((tool) => (
-          <Link key={tool.to} to={tool.to} className="feature-card" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <h3>{tool.title}</h3>
-            <p>{tool.desc}</p>
+        {TOOL_KEYS.map((key) => (
+          <Link
+            key={key}
+            to={localizedPath(lang, `/${key}`)}
+            className="feature-card"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <h3>{t(`home.tools.${key}.title`)}</h3>
+            <p>{t(`home.tools.${key}.desc`)}</p>
           </Link>
         ))}
       </div>
 
       <div className="seo-text">
-        <p>
-          <strong>Local Dev tools</strong> is a free, privacy-first developer toolkit.
-          Use it as a <strong>UUID generator</strong>, <strong>Base64 encoder and decoder</strong>,
-          <strong> SHA-1 / SHA-256 / SHA-512 hash generator</strong>, <strong>bcrypt hash and verify tool</strong>,
-          or <strong>JSON formatter and validator</strong>. Everything is compiled to WebAssembly and runs
-          entirely in your browser, so sensitive strings, passwords and identifiers never touch a server.
-        </p>
+        <p>{t('home.seoText', { b: (children) => <strong>{children}</strong> })}</p>
       </div>
     </div>
   );

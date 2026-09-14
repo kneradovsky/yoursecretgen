@@ -7,7 +7,11 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.resolve(__dirname, '../dist');
 const PORT = 3456;
-const ROUTES = ['/', '/uuid', '/base64', '/sha', '/bcrypt', '/json'];
+const LANGS = ['en', 'ru'];
+const SECTIONS = ['', 'uuid', 'base64', 'sha', 'bcrypt', 'json'];
+const ROUTES = SECTIONS.flatMap((section) =>
+  LANGS.map((lang) => (lang === 'en' ? `/${section}` : `/${lang}/${section}`))
+);
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -94,6 +98,27 @@ async function main() {
 
   try {
     const page = await browser.newPage();
+
+    // Block Google Analytics during prerendering: the gtag request can hang or
+    // fail in a headless environment, which keeps networkidle2 from ever
+    // resolving and aborts the whole prerender run. The injected gtag scripts
+    // are removed from the snapshot anyway (see cleanupInjectedGtagScripts).
+    await page.setRequestInterception(true);
+    page.on('request', (request) => {
+      if (request.url().includes('googletagmanager.com')) {
+        request.abort();
+      } else {
+        request.continue();
+      }
+    });
+    page.on('requestfinished', (r) => {console.log('FIN', r.url());r.response().content().then(c=>{if(!r.url().includes("assets")) console.log(new TextDecoder().decode(c))})});
+    page.on('requestfailed', (r) => console.log('FAILED', r.url(), r.failure()?.errorText));
+    page.on('load', () => console.log('LOAD EVENT'));
+    const inflight = new Set();
+    page.on('request', (r) => inflight.add(r.url()));
+    page.on('requestfinished', (r) => inflight.delete(r.url()));
+    page.on('requestfailed', (r) => inflight.delete(r.url()));
+    setTimeout(() => console.log('INFLIGHT AFTER 20s:', [...inflight]), 20000);
 
     for (const route of ROUTES) {
       const url = `http://localhost:${PORT}${route}`;
