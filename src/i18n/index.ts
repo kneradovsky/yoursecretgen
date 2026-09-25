@@ -4,7 +4,7 @@ import ru from './ru';
 
 export const LANGS = ['en', 'ru'] as const;
 export type Lang = (typeof LANGS)[number];
-export const DEFAULT_LANG: Lang = 'en';
+export const DEFAULT_LANG: Lang = import.meta.env.VITE_DEFAULT_LANG || 'en';
 
 export const dictionaries: Record<Lang, typeof en> = { en, ru };
 
