@@ -1,0 +1,32 @@
+# Keep the build context small and stop host artifacts from overwriting the
+# dependencies installed by `npm ci` inside the image.
+#
+# node_modules is the important one: `COPY . .` runs *after* `npm ci`, so
+# copying the host's tree into the Linux image replaces platform-specific
+# packages (esbuild, Puppeteer's Chromium) with macOS/arm64 builds.
+.git
+.github
+.gitignore
+node_modules
+dist
+docs
+
+# wasm-pack regenerates these inside the image (Stage 1 installs the Rust
+# toolchain); copying them would add ~150 MB of target dirs per crate plus
+# wasm binaries built for the host.
+wasm-crate/target
+wasm-crate/pkg
+wasm-crate-x509/target
+wasm-crate-x509/pkg
+
+# Local secrets and machine-specific overrides. Docker passes VITE_* through
+# ARG/ENV in the Dockerfile instead.
+.env
+.env.*
+!.env.example
+
+# Scratch files
+.DS_Store
+kimi-*-session*
+scripts/diag-*.mjs
+*.log

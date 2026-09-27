@@ -1,0 +1,5 @@
+[target.wasm32-unknown-unknown]
+# Same safety net as wasm-crate: if any transitive dependency pulls getrandom,
+# point it at the browser's crypto.getRandomValues instead of the unsupported
+# default backend.
+rustflags = ['--cfg', 'getrandom_backend="wasm_js"']

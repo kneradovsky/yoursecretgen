@@ -1,0 +1,31 @@
+[package]
+name = "uuidhash-x509-wasm"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+# Only parsing: the `verify`/`verify-aws` features pull ring/aws-lc-rs, which do
+# not build for wasm32 and would drag in signature verification we don't do.
+x509-parser = { version = "0.18", default-features = false }
+base64 = "0.22"
+sha1 = "0.10"
+sha2 = "0.10"
+
+# This module ships ~10x the code of the shared crate, so spend build time on
+# size: it is loaded lazily and only by the X.509 page.
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
+
+[package.metadata.wasm-pack.profile.release]
+# rustc emits bulk-memory instructions for wasm32 by default; wasm-opt refuses
+# to validate them unless the feature is enabled explicitly. Sizes measured:
+# none 243 KB, -O 228 KB, -Oz 225 KB.
+wasm-opt = ["-Oz", "--enable-bulk-memory"]

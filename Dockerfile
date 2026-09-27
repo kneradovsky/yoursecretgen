@@ -69,6 +69,11 @@ ENV VITE_GA_MEASUREMENT_ID=$VITE_GA_MEASUREMENT_ID
 ARG VITE_SITE_URL=https://mylocaltools.dev
 ENV VITE_SITE_URL=$VITE_SITE_URL
 
+# Language served on unprefixed routes (en or ru). Also decides which pages
+# prerender.js and generate-seo-files.mjs treat as the default language.
+ARG VITE_DEFAULT_LANG=en
+ENV VITE_DEFAULT_LANG=$VITE_DEFAULT_LANG
+
 RUN . "$HOME/.cargo/env" && npm run build:prerender
 
 # Stage 2: serve static files with Caddy

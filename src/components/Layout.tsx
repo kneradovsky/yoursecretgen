@@ -43,6 +43,7 @@ function Layout() {
           <NavLink to={localizedPath(lang, '/sha')}>{t('nav.sha')}</NavLink>
           <NavLink to={localizedPath(lang, '/bcrypt')}>{t('nav.bcrypt')}</NavLink>
           <NavLink to={localizedPath(lang, '/json')}>{t('nav.json')}</NavLink>
+          <NavLink to={localizedPath(lang, '/x509')}>{t('nav.x509')}</NavLink>
         </nav>
       </header>
       <main>

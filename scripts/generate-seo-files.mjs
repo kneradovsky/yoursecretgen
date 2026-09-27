@@ -6,42 +6,50 @@ import { loadEnv } from 'vite';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.resolve(__dirname, '../dist');
 const LANGS = ['en', 'ru'];
-const SECTIONS = ['', 'uuid', 'base64', 'sha', 'bcrypt', 'json'];
+const SECTIONS = ['', 'uuid', 'base64', 'sha', 'bcrypt', 'json', 'x509'];
 
-function localizedPath(lang, section) {
-  // Mirrors src/i18n/index.ts: the root of a non-default language has no
-  // trailing slash ('/ru'), nested sections do ('/ru/uuid').
-  return lang === 'en' ? `/${section}` : `/ru${section ? `/${section}` : ''}`;
+/** Mirrors vite.config.ts: only 'en' and 'ru' are supported, anything else is 'en'. */
+function resolveDefaultLang(value) {
+  return LANGS.includes(value) ? value : 'en';
 }
 
-function pageUrl(siteUrl, lang, section) {
+/** Mirrors src/i18n/index.ts: the default language has no URL prefix. */
+function localizedPath(lang, section, defaultLang) {
+  if (lang === defaultLang) return `/${section}`;
+  return `/${lang}${section ? `/${section}` : ''}`;
+}
+
+function pageUrl(siteUrl, lang, section, defaultLang) {
   // The root route has no trailing slash in the sitemap loc entries.
-  return `${siteUrl}${localizedPath(lang, section)}`;
+  return `${siteUrl}${localizedPath(lang, section, defaultLang)}`;
 }
 
-function buildSitemap(siteUrl) {
+function buildSitemap(siteUrl, defaultLang) {
   const lastmod = new Date().toISOString().slice(0, 10);
 
   const pages = SECTIONS.flatMap((section) => {
     const isHome = section === '';
     return LANGS.map((lang) => ({
-      loc: pageUrl(siteUrl, lang, section),
+      loc: pageUrl(siteUrl, lang, section, defaultLang),
+      lang,
       alternates: [...LANGS, 'x-default'].map((altLang) => ({
         hreflang: altLang,
-        href: pageUrl(siteUrl, altLang === 'x-default' ? LANGS[0] : altLang, section),
+        href: pageUrl(siteUrl, altLang === 'x-default' ? defaultLang : altLang, section, defaultLang),
       })),
       lastmod,
       changefreq: isHome ? 'weekly' : 'monthly',
-      priority: isHome ? (lang === 'en' ? '1.0' : '0.8') : lang === 'en' ? '0.8' : '0.7',
+      priority: isHome
+        ? lang === defaultLang
+          ? '1.0'
+          : '0.8'
+        : lang === defaultLang
+          ? '0.8'
+          : '0.7',
     }));
   });
 
-  // Default language pages first, localized pages after — mirrors the
-  // original public/sitemap.xml ordering.
-  pages.sort((a, b) => {
-    const langIndex = (p) => (p.loc.startsWith(`${siteUrl}/ru`) ? 1 : 0);
-    return langIndex(a) - langIndex(b);
-  });
+  // Default-language pages first, localized pages after.
+  pages.sort((a, b) => Number(a.lang !== defaultLang) - Number(b.lang !== defaultLang));
 
   const urls = pages
     .map(
@@ -78,6 +86,7 @@ async function main() {
   // builds (values from .env) and Docker builds (values from ARG/ENV).
   const env = loadEnv('production', path.resolve(__dirname, '..'), 'VITE_');
   const siteUrl = (env.VITE_SITE_URL || '').replace(/\/+$/, '');
+  const defaultLang = resolveDefaultLang(env.VITE_DEFAULT_LANG);
 
   if (!siteUrl) {
     throw new Error(
@@ -92,9 +101,11 @@ async function main() {
   }
 
   await fs.writeFile(path.join(DIST_DIR, 'robots.txt'), buildRobotsTxt(siteUrl));
-  await fs.writeFile(path.join(DIST_DIR, 'sitemap.xml'), buildSitemap(siteUrl));
+  await fs.writeFile(path.join(DIST_DIR, 'sitemap.xml'), buildSitemap(siteUrl, defaultLang));
 
-  console.log(`Generated dist/robots.txt and dist/sitemap.xml for ${siteUrl}`);
+  console.log(
+    `Generated dist/robots.txt and dist/sitemap.xml for ${siteUrl} (default language: ${defaultLang})`
+  );
 }
 
 main().catch((err) => {

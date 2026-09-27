@@ -3,14 +3,25 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import puppeteer from 'puppeteer';
 import { fileURLToPath } from 'url';
+import { loadEnv } from 'vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.resolve(__dirname, '../dist');
 const PORT = 3456;
 const LANGS = ['en', 'ru'];
-const SECTIONS = ['', 'uuid', 'base64', 'sha', 'bcrypt', 'json'];
+const SECTIONS = ['', 'uuid', 'base64', 'sha', 'bcrypt', 'json', 'x509'];
+
+// The default language (VITE_DEFAULT_LANG) is served from unprefixed routes,
+// every other language from /<lang>/... — the same rule src/i18n/index.ts and
+// scripts/generate-seo-files.mjs apply. Keep them in sync or the prerendered
+// HTML will disagree with the sitemap.
+const env = loadEnv('production', path.resolve(__dirname, '..'), 'VITE_');
+const DEFAULT_LANG = LANGS.includes(env.VITE_DEFAULT_LANG) ? env.VITE_DEFAULT_LANG : 'en';
+
 const ROUTES = SECTIONS.flatMap((section) =>
-  LANGS.map((lang) => (lang === 'en' ? `/${section}` : `/${lang}/${section}`))
+  LANGS.map((lang) =>
+    lang === DEFAULT_LANG ? `/${section}` : `/${lang}${section ? `/${section}` : ''}`
+  )
 );
 
 const MIME_TYPES = {

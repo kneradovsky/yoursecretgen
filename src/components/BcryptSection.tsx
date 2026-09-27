@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSEO } from '../hooks/useSEO';
 import CopyButton from './CopyButton';
 import { useI18n } from '../i18n';
-import { bcrypt_hash, bcrypt_verify } from '../wasm';
+import { bcryptHash, bcryptVerify } from '../lib/bcryptWorker';
 
 type Tab = 'hash' | 'verify';
 
@@ -23,15 +23,18 @@ function BcryptSection() {
   const [verifyPassword, setVerifyPassword] = useState('');
   const [verifyHash, setVerifyHash] = useState('');
   const [verifyResult, setVerifyResult] = useState<boolean | null>(null);
+  const [verifyError, setVerifyError] = useState('');
   const [verifying, setVerifying] = useState(false);
 
+  // bcrypt is synchronous wasm, so both jobs run in a Web Worker: the main
+  // thread stays responsive and `hashing` actually paints before the work ends
+  // (at cost 20 the computation takes tens of seconds).
   const handleHash = async () => {
     setHashError('');
     setHashResult('');
     setHashing(true);
     try {
-      const result = bcrypt_hash(password, cost);
-      setHashResult(result);
+      setHashResult(await bcryptHash(password, cost));
     } catch (e) {
       setHashError(String(e));
     } finally {
@@ -40,11 +43,13 @@ function BcryptSection() {
   };
 
   const handleVerify = async () => {
+    setVerifyError('');
     setVerifyResult(null);
     setVerifying(true);
     try {
-      const result = bcrypt_verify(verifyPassword, verifyHash);
-      setVerifyResult(result);
+      setVerifyResult(await bcryptVerify(verifyPassword, verifyHash));
+    } catch (e) {
+      setVerifyError(String(e));
     } finally {
       setVerifying(false);
     }
@@ -142,6 +147,7 @@ function BcryptSection() {
                 {verifyResult ? t('bcrypt.verifyMatch') : t('bcrypt.verifyNoMatch')}
               </div>
             )}
+            {verifyError && <div className="error">{verifyError}</div>}
           </>
         )}
       </div>

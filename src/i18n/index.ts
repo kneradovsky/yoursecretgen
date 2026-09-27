@@ -4,7 +4,15 @@ import ru from './ru';
 
 export const LANGS = ['en', 'ru'] as const;
 export type Lang = (typeof LANGS)[number];
-export const DEFAULT_LANG: Lang = import.meta.env.VITE_DEFAULT_LANG || 'en';
+
+/**
+ * Language served on unprefixed routes. Comes from VITE_DEFAULT_LANG so the
+ * same build can be deployed as the English site or the Russian one; anything
+ * unset or unsupported falls back to 'en'. The prerender and sitemap scripts
+ * read the same variable, and vite.config.ts rejects unsupported values.
+ */
+const envDefaultLang: string | undefined = import.meta.env.VITE_DEFAULT_LANG;
+export const DEFAULT_LANG: Lang = isLang(envDefaultLang) ? envDefaultLang : 'en';
 
 export const dictionaries: Record<Lang, typeof en> = { en, ru };
 

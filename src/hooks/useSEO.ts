@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { LANGS, localizedPath, useI18n, type Lang } from '../i18n';
+import { DEFAULT_LANG, LANGS, localizedPath, useI18n, type Lang } from '../i18n';
 
 const SITE_URL = import.meta.env.VITE_SITE_URL;
 const OG_IMAGE_URL = `${SITE_URL}/og-image.svg`;
@@ -24,7 +24,7 @@ function updateHreflangAlternates(sectionPath: string) {
     link.rel = 'alternate';
     link.hreflang = lang;
     link.href = `${SITE_URL}${localizedPath(
-      (lang === 'x-default' ? LANGS[0] : lang) as Lang,
+      (lang === 'x-default' ? DEFAULT_LANG : lang) as Lang,
       sectionPath
     )}`;
     link.setAttribute(HREFLANG_ATTR, '');

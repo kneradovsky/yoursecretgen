@@ -3,12 +3,17 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "ensure:wasm": "node scripts/ensure-wasm.mjs",
+    "predev": "npm run ensure:wasm",
     "dev": "vite",
-    "wasm": "cd wasm-crate && wasm-pack build --target bundler --out-dir pkg",
+    "wasm": "npm run wasm:core && npm run wasm:x509",
+    "wasm:core": "cd wasm-crate && wasm-pack build --target bundler --out-dir pkg",
+    "wasm:x509": "cd wasm-crate-x509 && wasm-pack build --target bundler --out-dir pkg",
     "build": "npm run wasm && tsc && vite build",
     "prerender": "node scripts/prerender.js",
     "seo": "node scripts/generate-seo-files.mjs",
     "build:prerender": "npm run build && npm run seo && npm run prerender",
+    "verify:e2e": "node scripts/verify-e2e.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

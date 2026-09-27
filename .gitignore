@@ -3,4 +3,6 @@ node_modules
 dist
 kimi-*-session*
 .env
+.env.*
+!.env.example
 docker-compose.yaml

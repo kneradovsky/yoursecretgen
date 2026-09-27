@@ -7,6 +7,7 @@ import Base64Section from './components/Base64Section';
 import ShaSection from './components/ShaSection';
 import BcryptSection from './components/BcryptSection';
 import JsonSection from './components/JsonSection';
+import X509Section from './components/X509Section';
 import { useAnalytics } from './hooks/useAnalytics';
 import { DEFAULT_LANG, LangProvider, isLang, type Lang } from './i18n';
 
@@ -32,6 +33,7 @@ const SECTION_ROUTES: { path: string; element: ReactNode }[] = [
   { path: 'sha', element: <ShaSection /> },
   { path: 'bcrypt', element: <BcryptSection /> },
   { path: 'json', element: <JsonSection /> },
+  { path: 'x509', element: <X509Section /> },
 ];
 
 function App() {

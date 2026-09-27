@@ -5,7 +5,7 @@ import { localizedPath, useI18n } from '../i18n';
 
 const SITE_URL = import.meta.env.VITE_SITE_URL;
 
-const TOOL_KEYS = ['uuid', 'base64', 'sha', 'bcrypt', 'json'] as const;
+const TOOL_KEYS = ['uuid', 'base64', 'sha', 'bcrypt', 'json', 'x509'] as const;
 
 function Home() {
   const { lang, t } = useI18n();

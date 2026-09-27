@@ -28,28 +28,10 @@
     <meta name="twitter:description" content="Free online developer tools for UUID, Base64, SHA and bcrypt. All processing runs locally in your browser via WebAssembly — no data is sent to servers." />
     <meta name="twitter:image" content="%VITE_SITE_URL%/og-image.svg" />
 
-    <!-- Google Analytics 4 — only loads when VITE_GA_MEASUREMENT_ID is set -->
-    <script>
-      (function () {
-        const gaId = '%VITE_GA_MEASUREMENT_ID%';
-        if (!gaId) return;
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        window.gtag = gtag;
-        gtag('js', new Date());
-        gtag('config', gaId);
-        // Defer past the load event so a slow/blocked gtag request cannot
-        // hold up the page's load event (tab would spin indefinitely).
-        window.addEventListener('load', function () {
-          setTimeout(function () {
-            const script = document.createElement('script');
-            script.async = true;
-            script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId);
-            document.head.appendChild(script);
-          }, 0);
-        });
-      })();
-    </script>
+    <!-- Google Analytics is loaded from src/lib/analytics.ts, where the
+         measurement ID comes from import.meta.env. Keeping it out of HTML
+         avoids an unresolved %VITE_GA_MEASUREMENT_ID% placeholder building into
+         a truthy string and enabling tracking on builds that opted out. -->
   </head>
   <body>
     <div id="root"></div>

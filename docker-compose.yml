@@ -12,6 +12,9 @@ services:
         - VITE_GA_MEASUREMENT_ID=${VITE_GA_MEASUREMENT_ID}
         # Public site URL used in SEO tags, robots.txt and sitemap.xml.
         - VITE_SITE_URL=${VITE_SITE_URL:-https://mylocaltools.dev}
+        # Language served on unprefixed routes: en (default) or ru.
+        # Set VITE_DEFAULT_LANG=ru for the Russian mirror.
+        - VITE_DEFAULT_LANG=${VITE_DEFAULT_LANG:-en}
     image: cr.yandex/crpgsp2at58gj0nsggn2/localtools:${IMAGE_TAG:-latest}
     container_name: uuidhash-web
     environment:
